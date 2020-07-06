@@ -12,3 +12,8 @@ module.exports.requirements = {
     clientPerms: [],
     ownerOnly: false
 }
+
+module.exports.limits = {
+    rateLimit: 5,
+    cooldown: 1e4
+}

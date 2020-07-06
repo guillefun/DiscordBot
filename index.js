@@ -1,18 +1,33 @@
-const { token, prefix } = require("./config");
+const { token, prefix, mongodbcon } = require("./config");
 const { Client, Collection } = require("discord.js");
+const { VultrexDB } = require("vultrex.db");
 
 const client = new Client({
   disableEveryone: true,
   disabledEvents: ["TYPINP_START"],
 });
 
-client.prefix = prefix;
-client.commands = new Collection();
+const db = new VultrexDB({
+  url: mongodbcon,
+  provider: 'mongodb',
+  collection: 'main'
+});
 
-const commands = require("./src/structures/command");
-commands.run(client);
+db.connect().then(() =>{
+  console.log("connectado")
+  client.commands = new Collection();
+  client.limits = new Map();
+  client.snipes = new Map();
+  client.prefix = new Object();
+  client.prefix["default"] = prefix;
+  client.db = db;
 
-const events = require("./src/structures/event");
-events.run(client);
+  const commands = require("./src/structures/command");
+  commands.run(client);
 
-client.login(token);
+  const events = require("./src/structures/event");
+  events.run(client);
+
+  client.login(token);
+});
+

@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/guillefun/DiscordBot#readme",
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js"
+    "discord.js": "github:discordjs/discord.js",
+    "mongodb": "^3.5.9",
+    "vultrex.db": "github:vultrex/vultrexdb"
   }
 }
