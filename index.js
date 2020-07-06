@@ -13,15 +13,17 @@ const db = new VultrexDB({
   collection: 'main'
 });
 
-db.connect().then(() =>{
-  console.log("connectado")
+db.connect().then(async() =>{
+  console.log("connectado");
+
   client.commands = new Collection();
   client.limits = new Map();
   client.snipes = new Map();
   client.prefix = new Object();
   client.prefix["default"] = prefix;
   client.db = db;
-
+  client.blacklist = await db.get("blacklist",[]);
+  
   const commands = require("./src/structures/command");
   commands.run(client);
 

@@ -3,6 +3,8 @@ const { owners } = require("../../config");
 module.exports = async (client, message) => {
     if (!message.guild || message.author.bot) return;
 
+    if(client.blacklist.includes(message.author.id)) return;
+    
     if(!client.prefix[message.guild.id]){
         client.prefix[message.guild.id] = await client.db.get(`prefix-${message.guild.id}`, client.prefix["default"]);
     }
