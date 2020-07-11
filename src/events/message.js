@@ -8,6 +8,25 @@ module.exports = async (client, message) => {
     if(!client.prefix[message.guild.id]){
         client.prefix[message.guild.id] = await client.db.get(`prefix-${message.guild.id}`, client.prefix["default"]);
     }
+
+    const level_info = await client.db.get(`level-${message.guild.id}-${message.author.id}`, {
+        level: 1,
+        xp: 0,
+        total_xp: 0
+    });
+   
+    const xp_obtained = Math.floor(Math.random() * 16 +1);
+    level_info.xp += xp_obtained;
+    level_info.total_xp += xp_obtained
+
+    if(level_info.xp >= level_info.level * 40){
+        level_info.level++;
+        level_info.xp = 0;
+        message.reply(`you are now level **${level_info.level}**`);
+    }
+
+    await client.db.set(`level-${message.guild.id}-${message.author.id}`,level_info);
+
     const args = message.content.split(/ +/g);
     const command = args.shift().slice(client.prefix[message.guild.id].length).toLowerCase();
     const cmd = client.commands.get(command);
