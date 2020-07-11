@@ -1,5 +1,5 @@
 /node_modules
-
+/src/commands/mcserver.js
 
 # Token
 /token.txt

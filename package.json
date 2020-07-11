@@ -20,6 +20,7 @@
     "canvas": "^2.6.1",
     "discord.js": "github:discordjs/discord.js",
     "mongodb": "^3.5.9",
+    "request": "^2.88.2",
     "vultrex.db": "github:vultrex/vultrexdb"
   }
 }
