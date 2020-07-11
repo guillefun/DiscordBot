@@ -17,10 +17,14 @@
   },
   "homepage": "https://github.com/guillefun/DiscordBot#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "canvas": "^2.6.1",
     "discord.js": "github:discordjs/discord.js",
+    "ffmpeg": "0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
     "mongodb": "^3.5.9",
     "request": "^2.88.2",
-    "vultrex.db": "github:vultrex/vultrexdb"
+    "vultrex.db": "github:vultrex/vultrexdb",
+    "ytdl-core": "^3.1.2"
   }
 }

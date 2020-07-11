@@ -9,11 +9,11 @@ const client = new Client({
 
 const db = new VultrexDB({
   url: mongodbcon,
-  provider: 'mongodb',
-  collection: 'main'
+  provider: "mongodb",
+  collection: "main",
 });
 
-db.connect().then(async() =>{
+db.connect().then(async () => {
   console.log("connectado");
 
   client.commands = new Collection();
@@ -22,8 +22,9 @@ db.connect().then(async() =>{
   client.prefix = new Object();
   client.prefix["default"] = prefix;
   client.db = db;
-  client.blacklist = await db.get("blacklist",[]);
-  
+  client.blacklist = await db.get("blacklist", []);
+  client.queue = new Map();
+
   const commands = require("./src/structures/command");
   commands.run(client);
 
@@ -32,4 +33,3 @@ db.connect().then(async() =>{
 
   client.login(token);
 });
-
