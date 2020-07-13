@@ -38,24 +38,24 @@ module.exports.run = (client, message, args) => {
         client.user.displayAvatarURL(),
         "https://github.com/guillefun/DiscordBot"
       )
-      .setDescription("These are the Bot Commands")
+      .setDescription("These are the Bot Commands :robot:")
       .setThumbnail(client.user.displayAvatarURL())
       .addFields(
         {
-          name: "Music Commands",
+          name: "Music Commands :musical_note:",
           value:
             `${prefix}play <url>: Play music from a youtube video or playlist\n` +
             `${prefix}stop: Delete the song queue\n` +
             `${prefix}skip: Skip the current song\n`,
         },
         {
-          name: "Rank Commands",
+          name: "Rank Commands :stars:",
           value:
             `${prefix}rank: Check your rank\n` +
             `${prefix}banner <url.png/jpg>: Add a custom background to your banner\n`,
         },
         {
-          name: "Miscellaneous Commands",
+          name: "Miscellaneous Commands :fallen_leaf:",
           value:
             `${prefix}mcserver : Check the status of your minecraft server!\n` +
             `${prefix}gif <string> : Get a random gif related with a word given!\n`,

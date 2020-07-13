@@ -29,5 +29,11 @@ db.connect().then(async () => {
   const events = require("./src/structures/event");
   events.run(client);
 
-  client.login(token);
+  await client.login(token);
+
+  const activityTypes = ["PLAYING", "STREAMING", "LISTENING", "WATCHING"];
+  let randomType =
+    activityTypes[Math.floor(Math.random() * activityTypes.length)];
+
+  await client.user.setActivity(" Reddit.", { type: randomType });
 });

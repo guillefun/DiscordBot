@@ -1,5 +1,6 @@
 const ytdl = require("ytdl-core");
 const ytpl = require("ytpl");
+const { MessageEmbed } = require("discord.js");
 module.exports.run = async (client, message, args) => {
   const msg_args = message.content.split(" ");
 
@@ -35,8 +36,11 @@ module.exports.run = async (client, message, args) => {
         playing: true,
       };
       client.queue.set(message.guild.id, queueContruct);
+      var counter = 0;
       playlist.items.forEach((song) => {
         queueContruct.songs.push(song);
+        if (counter < 15) console.log(song);
+        counter++;
       });
       try {
         if (playlist) {
@@ -63,9 +67,14 @@ module.exports.run = async (client, message, args) => {
     }
   } else {
     const songInfo = await ytdl.getInfo(args[0]);
+
     const song = {
-      title: songInfo.title,
-      url: songInfo.video_url,
+      title: songInfo.videoDetails.title,
+      url: songInfo.videoDetails.video_url,
+      thumbnail:
+        songInfo.videoDetails.thumbnail.thumbnails[
+          songInfo.videoDetails.thumbnail.thumbnails.length - 1
+        ].url,
     };
 
     if (!serverQueue) {
@@ -96,21 +105,36 @@ module.exports.run = async (client, message, args) => {
 
   function play(guild, song) {
     const serverQueue = client.queue.get(guild.id);
+
     if (!song) {
       serverQueue.voiceChannel.leave();
       client.queue.delete(guild.id);
       return;
     }
+    if (song.title === "[Private video]" || song.title === "[Deleted video]") {
+      serverQueue.songs.shift();
+      play(guild, serverQueue.songs[0]);
+    } else {
+      const dispatcher = serverQueue.connection
+        .play(ytdl(song.url))
+        .on("finish", () => {
+          serverQueue.songs.shift();
+          play(guild, serverQueue.songs[0]);
+        })
+        .on("error", (error) => {});
 
-    const dispatcher = serverQueue.connection
-      .play(ytdl(song.url))
-      .on("finish", () => {
-        serverQueue.songs.shift();
-        play(guild, serverQueue.songs[0]);
-      })
-      .on("error", (error) => {});
-    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-    serverQueue.textChannel.send(`Start playing: **${song.title}**`);
+      dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+
+      const embed = new MessageEmbed()
+        .setColor("#F37748")
+        .setTitle(`:musical_note: Start playing :musical_note:`)
+        .setDescription(song.title)
+        .setThumbnail(client.user.displayAvatarURL())
+        .setImage(song.thumbnail)
+        .setTimestamp();
+
+      serverQueue.textChannel.send(embed);
+    }
   }
 };
 module.exports.help = {

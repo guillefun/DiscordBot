@@ -11,7 +11,9 @@ module.exports.run = async (client, message, args) => {
     `level-${message.guild.id}-${message.author.id}`
   );
 
-  if (!data) {return message.reply("no rank")};
+  if (!data) {
+    return message.reply("no rank");
+  }
 
   const canvas = createCanvas(1280, 720);
 
@@ -20,17 +22,19 @@ module.exports.run = async (client, message, args) => {
     `banner-${message.guild.id}-${message.author.id}`
   );
   var background = "";
-  
-  if (!url_background){
-    try{
-    background = await loadImage(
-      "https://png.pngtree.com/thumb_back/fw800/back_our/20190620/ourmid/pngtree-auto-show-board-background-material-image_162844.jpg"
-    );
-    }catch(err){
-      else background = await loadImage(url_background);
-    }}
-  else background = await loadImage(url_background);
-  if (background) {ctx.drawImage(background, 0, 0, canvas.width, canvas.height)};
+
+  if (!url_background) {
+    try {
+      background = await loadImage(
+        "https://png.pngtree.com/thumb_back/fw800/back_our/20190620/ourmid/pngtree-auto-show-board-background-material-image_162844.jpg"
+      );
+    } catch (err) {
+      background = await loadImage(url_background);
+    }
+  } else background = await loadImage(url_background);
+  if (background) {
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+  }
 
   ctx.beginPath();
   ctx.lineWidth = 4;
@@ -50,10 +54,10 @@ module.exports.run = async (client, message, args) => {
 
   ctx.fillStyle = "#000000";
   ctx.globalAlpha = 0.6;
-  ctx.fillRect(258, 450, 270, 143);
+  ctx.fillRect(258, 450, 370, 143);
   ctx.fill();
   ctx.globalAlpha = 1;
-  ctx.strokeRect(258, 450, 270, 143);
+  ctx.strokeRect(258, 450, 370, 143);
   ctx.stroke();
 
   ctx.font = "30px Arial";
@@ -62,10 +66,10 @@ module.exports.run = async (client, message, args) => {
   ctx.fillText(`${data.xp} / ${data.level * 40} XP `, 600, 640);
 
   ctx.textAlign = "left";
-  ctx.fillText(member.user.tag, 300, 500);
+  ctx.fillText(member.user.tag, 340, 500);
 
   ctx.font = "50px Arial";
-  ctx.fillText("Level:", 300, 560);
+  ctx.fillText("Level:", 340, 560);
   ctx.fillText(data.level, 470, 560);
 
   ctx.arc(170, 530, 130, 0, Math.PI * 2, true);
