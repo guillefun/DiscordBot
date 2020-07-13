@@ -14,8 +14,6 @@ const db = new VultrexDB({
 });
 
 db.connect().then(async () => {
-  console.log("connectado");
-
   client.commands = new Collection();
   client.limits = new Map();
   client.snipes = new Map();

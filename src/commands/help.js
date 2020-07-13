@@ -27,9 +27,9 @@ module.exports.run = (client, message, args) => {
                                         .join(", ")
                                         );*/
     var prefix = client.prefix[message.guild.id];
-    if(!prefix)
+    if (!prefix) {
       client.prefix["default"];
-    
+    }
     const embed = new MessageEmbed()
       .setColor("#F37748")
       .setTitle("Bot Commands")
@@ -57,14 +57,14 @@ module.exports.run = (client, message, args) => {
         {
           name: "Miscellaneous Commands",
           value:
-             `${prefix}mcserver : Check the status of your minecraft server!\n` +
-             `${prefix}gif <string> : Get a random gif related with a word given!\n`,
+            `${prefix}mcserver : Check the status of your minecraft server!\n` +
+            `${prefix}gif <string> : Get a random gif related with a word given!\n`,
         }
       )
       //.addField("Inline field title", "Some value here", true)
       .setImage(client.user.displayAvatarURL())
       .setTimestamp();
-      
+
     message.channel.send(embed);
   }
 };

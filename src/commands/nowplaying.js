@@ -2,7 +2,9 @@ const ytdl = require("ytdl-core");
 
 module.exports.run = async (client, message, args) => {
   const serverQueue = client.queue.get(message.guild.id);
-  if (!serverQueue) return message.channel.send("There is nothing playing.");
+  if (!serverQueue) {
+    return message.channel.send("There is nothing playing.");
+  }
   return message.channel.send(`Now playing: ${serverQueue.songs[0].title}`);
 };
 module.exports.help = {

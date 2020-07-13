@@ -7,12 +7,13 @@ module.exports.run = async (client, message, args) => {
     clientSecret: client_secret,
   });
 
-  gfycat.authenticate((err, data) => {
-    //Your app is now authenticated
-
-    console.log("token", gfycat.token);
-  });
-
+  gfycat.authenticate((err, data) => {});
+  var i;
+  var text = "";
+  for (i = 0; i < args.length; i++) {
+    text += args[i] + " ";
+  }
+  message.channel.send(`Searching gif of ${text}`);
   let options = {
     search_text: args[0],
     count: 20,
@@ -20,14 +21,15 @@ module.exports.run = async (client, message, args) => {
   };
   var gifs;
   gfycat.search(options).then((data) => {
-    //gifs = data;
-    //console.log("gfycats", data);
-    console.log(data);
-    var index = Math.floor(Math.random() * data.gfycats.length);
-    while (!data.gfycats[index].gifUrl) {
-      index = Math.floor(Math.random() * data.gfycats.length);
+    if (data.gfycats.length === 0) {
+      message.channel.send(`There are no gifs for ${text}`);
+    } else {
+      var index = Math.floor(Math.random() * data.gfycats.length);
+      while (!data.gfycats[parseInt(index)].gifUrl) {
+        index = Math.floor(Math.random() * data.gfycats.length);
+      }
+      message.channel.send(`${data.gfycats[parseInt(index)].gifUrl}`);
     }
-    message.channel.send(`${data.gfycats[index].gifUrl}`);
   });
 };
 module.exports.help = {

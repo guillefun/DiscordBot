@@ -2,10 +2,11 @@ const ytdl = require("ytdl-core");
 
 module.exports.run = async (client, message, args) => {
   const serverQueue = client.queue.get(message.guild.id);
-  if (!message.member.voice.channel)
+  if (!message.member.voice.channel) {
     return message.channel.send(
       "You have to be in a voice channel to stop the music!"
     );
+  }
   serverQueue.songs = [];
   serverQueue.connection.dispatcher.end();
 };

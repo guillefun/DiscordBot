@@ -11,59 +11,64 @@ module.exports.run = async (client, message, args) => {
     `level-${message.guild.id}-${message.author.id}`
   );
 
-  if (!data) return message.reply("no rank");
+  if (!data) {return message.reply("no rank")};
 
-  const canvas = createCanvas(1000, 533);
+  const canvas = createCanvas(1280, 720);
 
   const ctx = canvas.getContext("2d");
   const url_background = await client.db.get(
     `banner-${message.guild.id}-${message.author.id}`
   );
   var background = "";
-  if (!url_background)
+  
+  if (!url_background){
+    try{
     background = await loadImage(
       "https://png.pngtree.com/thumb_back/fw800/back_our/20190620/ourmid/pngtree-auto-show-board-background-material-image_162844.jpg"
     );
+    }catch(err){
+      else background = await loadImage(url_background);
+    }}
   else background = await loadImage(url_background);
-  if (background) ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+  if (background) {ctx.drawImage(background, 0, 0, canvas.width, canvas.height)};
 
   ctx.beginPath();
   ctx.lineWidth = 4;
   ctx.strokeStyle = "#ffffff";
   ctx.globalAlpha = 0.5;
-  ctx.fillRect(180, 396, 770, 65);
+  ctx.fillRect(180, 596, 770, 65);
   ctx.fill();
   ctx.globalAlpha = 1;
-  ctx.strokeRect(180, 396, 770, 65);
+  ctx.strokeRect(180, 596, 770, 65);
   ctx.stroke();
 
   ctx.fillStyle = "#e67e22";
   ctx.globalAlpha = 0.6;
-  ctx.fillRect(180, 396, (100 / (data.level * 40)) * data.xp * 7.7, 65);
+  ctx.fillRect(180, 596, (100 / (data.level * 40)) * data.xp * 7.7, 65);
   ctx.fill();
   ctx.globalAlpha = 1;
 
   ctx.fillStyle = "#000000";
   ctx.globalAlpha = 0.6;
-  ctx.fillRect(258, 250, 270, 143);
+  ctx.fillRect(258, 450, 270, 143);
   ctx.fill();
   ctx.globalAlpha = 1;
-  ctx.strokeRect(258, 250, 270, 143);
+  ctx.strokeRect(258, 450, 270, 143);
   ctx.stroke();
 
   ctx.font = "30px Arial";
   ctx.textAlign = "center";
   ctx.fillStyle = "#ffffff";
-  ctx.fillText(`${data.xp} / ${data.level * 40} XP `, 600, 440);
+  ctx.fillText(`${data.xp} / ${data.level * 40} XP `, 600, 640);
 
   ctx.textAlign = "left";
-  ctx.fillText(member.user.tag, 300, 300);
+  ctx.fillText(member.user.tag, 300, 500);
 
   ctx.font = "50px Arial";
-  ctx.fillText("Level:", 300, 360);
-  ctx.fillText(data.level, 470, 360);
+  ctx.fillText("Level:", 300, 560);
+  ctx.fillText(data.level, 470, 560);
 
-  ctx.arc(170, 340, 120, 0, Math.PI * 2, true);
+  ctx.arc(170, 530, 130, 0, Math.PI * 2, true);
   ctx.lineWidth = 6;
   ctx.strokeStyle = "#ffffff";
   ctx.stroke();
@@ -73,7 +78,7 @@ module.exports.run = async (client, message, args) => {
   const avatar = await loadImage(
     member.user.displayAvatarURL({ format: "jpg" })
   );
-  ctx.drawImage(avatar, 40, 220, 250, 250);
+  ctx.drawImage(avatar, 40, 400, 265, 265);
 
   const attachment = new MessageAttachment(canvas.toBuffer(), "rank.png");
   message.channel.send(`Rank | **${member.user.username}**`, attachment);
