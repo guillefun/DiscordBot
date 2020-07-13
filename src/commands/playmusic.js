@@ -18,6 +18,14 @@ module.exports.run = async (client, message, args) => {
   }
 
   const serverQueue = client.queue.get(message.guild.id);
+  const queueContruct = {
+    textChannel: message.channel,
+    voiceChannel: voiceChannel,
+    connection: null,
+    songs: [],
+    volume: 5,
+    playing: true,
+  };
 
   if (ytpl.validateURL(args[0])) {
     var playlistID;
@@ -25,16 +33,8 @@ module.exports.run = async (client, message, args) => {
       playlistID = id;
     });
     const playlist = await ytpl(playlistID);
+
     if (!serverQueue) {
-      // Creating the contract for our queue
-      const queueContruct = {
-        textChannel: message.channel,
-        voiceChannel: voiceChannel,
-        connection: null,
-        songs: [],
-        volume: 5,
-        playing: true,
-      };
       client.queue.set(message.guild.id, queueContruct);
       var counter = 0;
       playlist.items.forEach((song) => {
@@ -65,7 +65,7 @@ module.exports.run = async (client, message, args) => {
         );
       }
     }
-  } else {
+  } else if (ytdl.validateURL(args[0])) {
     const songInfo = await ytdl.getInfo(args[0]);
 
     const song = {
@@ -78,14 +78,6 @@ module.exports.run = async (client, message, args) => {
     };
 
     if (!serverQueue) {
-      const queueContruct = {
-        textChannel: message.channel,
-        voiceChannel: voiceChannel,
-        connection: null,
-        songs: [],
-        volume: 5,
-        playing: true,
-      };
       client.queue.set(message.guild.id, queueContruct);
       queueContruct.songs.push(song);
 
