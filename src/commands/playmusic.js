@@ -40,7 +40,7 @@ module.exports.run = async (client, message, args) => {
       });
       try {
         if (playlist) {
-          var connection = await voiceChannel.join();
+          const connection = await voiceChannel.join();
           queueContruct.connection = connection;
 
           play(message.guild, queueContruct.songs[0]);
@@ -81,7 +81,7 @@ module.exports.run = async (client, message, args) => {
       queueContruct.songs.push(song);
 
       try {
-        var connection = await voiceChannel.join();
+        const connection = await voiceChannel.join();
         queueContruct.connection = connection;
         play(message.guild, queueContruct.songs[0]);
       } catch (err) {
@@ -108,7 +108,7 @@ module.exports.run = async (client, message, args) => {
         serverQueue.songs.shift();
         play(guild, serverQueue.songs[0]);
       })
-      .on("error", (error) => console.error(error));
+      .on("error", (error) => {});
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     serverQueue.textChannel.send(`Start playing: **${song.title}**`);
   }
@@ -126,5 +126,5 @@ module.exports.requirements = {
 
 module.exports.limits = {
   rateLimit: 25,
-  cooldown: 1e4,
+  cooldown: 60000,
 };

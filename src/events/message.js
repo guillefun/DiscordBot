@@ -109,18 +109,18 @@ module.exports = async (client, message) => {
     }, cmd.limits.cooldown);
   }
 
-  cmd.run(client, message, args);
-};
+  const miss_perms = (member, perms) => {
+    const mperms = member.permission.missing(perms).map(
+      (s) =>
+        `\`${str
+          .replace(/_/g, " ")
+          .toLowerCase()
+          .replace(/\b(\w)/g, (char) => char.toUpperCase())}\``
+    );
+    return mperms.length > 1
+      ? `${mperms.slice(0, -1).join(", ")} and ${mperms.slice(-1)[0]}`
+      : mperms[0];
+  };
 
-const miss_perms = (member, perms) => {
-  const mperms = member.permission.missing(perms).map(
-    (s) =>
-      `\`${str
-        .replace(/_/g, " ")
-        .toLowerCase()
-        .replace(/\b(\w)/g, (char) => char.toUpperCase())}\``
-  );
-  return mperms.length > 1
-    ? `${mperms.slice(0, -1).join(", ")} and ${mperms.slice(-1)[0]}`
-    : mperms[0];
+  cmd.run(client, message, args);
 };

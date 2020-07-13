@@ -2,7 +2,7 @@ const {MessageAttachment} = require("discord.js");
 const { createCanvas, loadImage } = require("canvas");
 const { join } = require("path");
 
-module.exports.run = async (client, message, args) =>{
+module.exports.run = async (client, message, args) => {
     var regex = /[\/.](jpg|jpeg|tiff|png)$/i;
     if(args[0] && regex.test(args[0])){
         client.db.set(`banner-${message.guild.id}-${message.author.id}`, args[0]);
@@ -26,5 +26,5 @@ module.exports.requirements = {
 
 module.exports.limits = {
     rateLimit: 3,
-    cooldown: 6e4
+    cooldown: 60000
 }

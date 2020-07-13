@@ -11,7 +11,7 @@ module.exports.run = async (client, message, args) => {
   var i;
   var text = "";
   for (i = 0; i < args.length; i++) {
-    text += args[i] + " ";
+    text += args[parseInt(i)] + " ";
   }
   message.channel.send(`Searching gif of ${text}`);
   let options = {
@@ -44,6 +44,6 @@ module.exports.requirements = {
 };
 
 module.exports.limits = {
-  rateLimit: 5,
-  cooldown: 1e4,
+  rateLimit: 15,
+  cooldown: 10000,
 };
