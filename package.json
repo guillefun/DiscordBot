@@ -23,8 +23,6 @@
     "ffmpeg": "0.0.4",
     "fluent-ffmpeg": "^2.1.2",
     "gfycat-sdk": "^1.4.18",
-    "jikan-node": "^1.2.1",
-    "jikan-nodejs": "^0.1.0",
     "mongodb": "^3.5.9",
     "request": "^2.88.2",
     "vultrex.db": "github:vultrex/vultrexdb",

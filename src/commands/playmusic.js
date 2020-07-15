@@ -1,6 +1,8 @@
 const ytdl = require("ytdl-core");
 const ytpl = require("ytpl");
 const { MessageEmbed } = require("discord.js");
+const fs = require("fs");
+
 module.exports.run = async (client, message, args) => {
   const msg_args = message.content.split(" ");
 
@@ -39,8 +41,6 @@ module.exports.run = async (client, message, args) => {
       var counter = 0;
       playlist.items.forEach((song) => {
         queueContruct.songs.push(song);
-        if (counter < 15) console.log(song);
-        counter++;
       });
       try {
         if (playlist) {
@@ -67,7 +67,6 @@ module.exports.run = async (client, message, args) => {
     }
   } else if (ytdl.validateURL(args[0])) {
     const songInfo = await ytdl.getInfo(args[0]);
-
     const song = {
       title: songInfo.videoDetails.title,
       url: songInfo.videoDetails.video_url,
@@ -95,37 +94,58 @@ module.exports.run = async (client, message, args) => {
     }
   }
 
-  function play(guild, song) {
+  async function play(guild, song) {
     const serverQueue = client.queue.get(guild.id);
 
     if (!song) {
       serverQueue.voiceChannel.leave();
       client.queue.delete(guild.id);
       return;
-    }
-    if (song.title === "[Private video]" || song.title === "[Deleted video]") {
-      serverQueue.songs.shift();
-      play(guild, serverQueue.songs[0]);
     } else {
-      const dispatcher = serverQueue.connection
-        .play(ytdl(song.url))
-        .on("finish", () => {
+      try {
+        const songData = await ytdl.getInfo(song.url);
+        if (songData.playerResponse.playabilityStatus.status === "OK") {
+          const dispatcher = serverQueue.connection
+            .play(ytdl(song.url))
+            .on("finish", () => {
+              serverQueue.songs.shift();
+              play(guild, serverQueue.songs[0]);
+            })
+            .on("error", (error) => {});
+
+          dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+
+          const embed = new MessageEmbed()
+            .setColor("#F37748")
+            .setAuthor(
+              `${client.user.username}`,
+              client.user.displayAvatarURL(),
+              "https://github.com/guillefun/DiscordBot"
+            )
+            .setTitle(`${song.title}`)
+            .setURL(song.url)
+            .setDescription(``)
+            .setImage(song.thumbnail)
+            .setTimestamp()
+            .setFooter(`[${song.title}]`);
+
+          serverQueue.textChannel.send(embed);
+          //https://thumbs.gfycat.com/GreatWeeHippopotamus-size_restricted.gif
+        } else {
+          serverQueue.textChannel.send(
+            `${song.title} is unavailable, the video could be restricted or have copyright issues.\n`
+          );
           serverQueue.songs.shift();
           play(guild, serverQueue.songs[0]);
-        })
-        .on("error", (error) => {});
-
-      dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-
-      const embed = new MessageEmbed()
-        .setColor("#F37748")
-        .setTitle(`:musical_note: Start playing :musical_note:`)
-        .setDescription(song.title)
-        .setThumbnail(client.user.displayAvatarURL())
-        .setImage(song.thumbnail)
-        .setTimestamp();
-
-      serverQueue.textChannel.send(embed);
+        }
+      } catch (err) {
+        console.error(err);
+        serverQueue.textChannel.send(
+          `${song.title} is a deleted video or private.\n`
+        );
+        serverQueue.songs.shift();
+        play(guild, serverQueue.songs[0]);
+      }
     }
   }
 };
