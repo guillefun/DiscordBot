@@ -1,6 +1,7 @@
 /node_modules
 /src/commands/mcserver.js
 /src/commands/playlist.js
+/src/commands/mecago.js
 # Token
 /token.txt
 /config.js

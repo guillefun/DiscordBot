@@ -151,7 +151,7 @@ module.exports.run = async (client, message, args) => {
 };
 module.exports.help = {
   name: "play",
-  description: "play a song",
+  description: "Play a song from a Youtube video or an entire playlist",
 };
 
 module.exports.requirements = {

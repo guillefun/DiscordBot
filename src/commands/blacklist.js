@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args) => {
 
 module.exports.help = {
   name: "blacklist",
-  description: "BAN.",
+  description: "People added to the blacklist cannot use any command.",
 };
 
 module.exports.requirements = {

@@ -33,8 +33,8 @@ module.exports.run = async (client, message, args) => {
   await message.reply(await getStatus());
 };
 module.exports.help = {
-  name: "X",
-  description: "See Minecraft server status",
+  name: "Xmcserver",
+  description: "See your Minecraft server status",
 };
 
 module.exports.requirements = {

@@ -9,7 +9,7 @@ module.exports.run = async (client, message, args) => {
 };
 module.exports.help = {
   name: "playing",
-  description: "Get the music playing",
+  description: "Get the name of the song you're listening to",
 };
 
 module.exports.requirements = {

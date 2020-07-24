@@ -97,7 +97,7 @@ module.exports.run = async (client, message, args) => {
 
 module.exports.help = {
   name: "rank",
-  description: "View rank",
+  description: "View your card rank",
 };
 
 module.exports.requirements = {

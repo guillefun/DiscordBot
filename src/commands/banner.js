@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args) => {
 
 module.exports.help = {
   name: "banner",
-  description: "Change banner",
+  description: "Change the background of your banner",
 };
 
 module.exports.requirements = {
